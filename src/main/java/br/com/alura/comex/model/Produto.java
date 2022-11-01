@@ -1,7 +1,5 @@
 package br.com.alura.comex.model;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "produtos")
@@ -35,6 +34,15 @@ public class Produto {
 
     public Produto(){
     }
+
+	public Produto(ProdutoBuilder builder) {
+		this.nome = builder.nome;
+		this.descricao = builder.descricao;
+		this.precoUnitario = builder.precoUnitario;
+		this.quantidadeEstoque = builder.quantidadeEstoque;
+		this.categoria = builder.categoria;
+	}
+
 
 	public Long getId() {
 		return id;
@@ -84,4 +92,48 @@ public class Produto {
 		this.categoria = categoria;
 	}
 
+	public static ProdutoBuilder builder() {
+		return new ProdutoBuilder();
+	}
+
+	public static final class ProdutoBuilder {
+		private String nome;
+		private String descricao;
+		private BigDecimal precoUnitario;
+		private int quantidadeEstoque;
+
+		private Categoria categoria;
+
+		private ProdutoBuilder() {
+		}
+
+		public ProdutoBuilder withNome(String nome) {
+			this.nome = nome;
+			return this;
+		}
+
+		public ProdutoBuilder withDescricao(String descricao) {
+			this.descricao = descricao;
+			return this;
+		}
+
+		public ProdutoBuilder withPrecoUnitario(BigDecimal precoUnitario) {
+			this.precoUnitario = precoUnitario;
+			return this;
+		}
+
+		public ProdutoBuilder withQuantidadeEstoque(int quantidadeEstoque) {
+			this.quantidadeEstoque = quantidadeEstoque;
+			return this;
+		}
+
+		public ProdutoBuilder withCategoria(Categoria categoria) {
+			this.categoria = categoria;
+			return this;
+		}
+
+		public Produto build() {
+			return new Produto(this);
+		}
+	}
 }

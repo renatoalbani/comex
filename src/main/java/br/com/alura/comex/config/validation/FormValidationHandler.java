@@ -1,6 +1,7 @@
 package br.com.alura.comex.config.validation;
 
 import br.com.alura.comex.config.validation.dto.FormErrorDto;
+import br.com.alura.comex.config.validation.exception.CategoriaInvalidaException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,13 @@ public class FormValidationHandler {
         return fieldErrors.stream().map(fe ->
                 new FormErrorDto(fe.getField(),
                         messageSource.getMessage(fe, LocaleContextHolder.getLocale()))).toList();
+
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CategoriaInvalidaException.class)
+    public List<FormErrorDto> handle(CategoriaInvalidaException exception){
+        return List.of(new FormErrorDto("idCategoria", messageSource.getMessage("produto.categoria.id.invalida.erro", null, LocaleContextHolder.getLocale())));
 
     }
 
