@@ -5,6 +5,7 @@ import br.com.alura.comex.controller.form.CategoriaForm;
 import br.com.alura.comex.model.Categoria;
 import br.com.alura.comex.model.CategoriaPedidosProjecao;
 import br.com.alura.comex.repository.CategoriaRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,7 @@ public class CategoriaController {
     }
 
     @GetMapping("/pedidos")
+    @Cacheable(value = "relatorioPedidos")
     public ResponseEntity<List<CategoriaPedidosProjecao>> listarCategoriaPedidos(){
         return ResponseEntity.ok(categoriaRepository.findCategoriaPedidos());
     }
